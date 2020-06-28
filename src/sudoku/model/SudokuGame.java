@@ -51,27 +51,56 @@ public class SudokuGame {
 				return number;
 			}
 		}
-		
+
 		return -1;
 	}
 
 	private boolean isSafe(int number, int indexX, int indexY, int[][] board) {
-		return isSafeX(board, indexY, number) && isSafeY(board, indexX, number) && isSafeBox(board, indexX, indexY, number);
+		return isSafeX(board, indexY, number) && isSafeY(board, indexX, number)
+				&& isSafeBox(board, indexX, indexY, number);
 	}
 
 	private boolean isSafeBox(int[][] board, int indexX, int indexY, int number) {
-		// TODO Auto-generated method stub
-		return false;
+		int x1, y1;
+		
+		if(indexX < 3) {
+			x1 = 0;
+		}else if(indexX<6){
+			x1 = 3;
+		}else {
+			x1 =6;
+		}
+		
+		if (indexY < 3) {
+			y1 = 0;
+		}else if(indexY < 6 ) {
+			y1 = 3;
+		}else {
+			y1 = 6;
+		}
+		
+		for(int yy =y1; yy < y1 +3; yy++) {
+			for(int xx = x1; xx<x1+3; xx++) {
+				if(board[yy][xx] == number) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	private boolean isSafeY(int[][] board, int indexX, int number) {
-		// TODO Auto-generated method stub
-		return false;
+		for (int y = 0; y < 9; y++) {
+			if (board[y][indexX] == number) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private boolean isSafeX(int[][] board, int indexY, int number) {
-		for(int x = 0 ; x<9;x++) {
-			if(board[indexY][x] == number) {
+		for (int x = 0; x < 9; x++) {
+			if (board[indexY][x] == number) {
 				return false;
 			}
 		}
