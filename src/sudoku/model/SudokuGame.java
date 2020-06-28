@@ -10,7 +10,7 @@ public class SudokuGame {
 
 	}
 
-	public int[][] createSolution(int[][] board, int index) {
+	private int[][] createSolution(int[][] board, int index) {
 
 		if (index > 80) {
 			return board;
@@ -62,26 +62,26 @@ public class SudokuGame {
 
 	private boolean isSafeBox(int[][] board, int indexX, int indexY, int number) {
 		int x1, y1;
-		
-		if(indexX < 3) {
+
+		if (indexX < 3) {
 			x1 = 0;
-		}else if(indexX<6){
+		} else if (indexX < 6) {
 			x1 = 3;
-		}else {
-			x1 =6;
+		} else {
+			x1 = 6;
 		}
-		
+
 		if (indexY < 3) {
 			y1 = 0;
-		}else if(indexY < 6 ) {
+		} else if (indexY < 6) {
 			y1 = 3;
-		}else {
+		} else {
 			y1 = 6;
 		}
-		
-		for(int yy =y1; yy < y1 +3; yy++) {
-			for(int xx = x1; xx<x1+3; xx++) {
-				if(board[yy][xx] == number) {
+
+		for (int yy = y1; yy < y1 + 3; yy++) {
+			for (int xx = x1; xx < x1 + 3; xx++) {
+				if (board[yy][xx] == number) {
 					return false;
 				}
 			}
@@ -105,6 +105,33 @@ public class SudokuGame {
 			}
 		}
 		return true;
+	}
+
+	private int[][] createGame(int[][] board) {
+		List<Integer> positions = new ArrayList<Integer>();
+		for (int i = 0; i < 81; i++) {
+			positions.add(i);
+		}
+		Collections.shuffle(positions);
+		
+		return createGameBackend(board, positions);
+	}
+
+	private int[][] createGameBackend(int[][] board, List<Integer> positions) {
+		while(positions.size()>0) {
+			int position = positions.remove(0);
+			int indexX = position % 9;
+			int indexY = position / 9;
+			
+			int savedValue = board[indexY][indexX];
+			board[indexY][indexX] = 0;
+			
+			if(!isValid(board)) {
+				board[indexY][indexX] = savedValue;
+			}
+		}
+		
+		return board;
 	}
 
 }
