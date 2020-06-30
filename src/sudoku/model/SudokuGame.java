@@ -113,25 +113,67 @@ public class SudokuGame {
 			positions.add(i);
 		}
 		Collections.shuffle(positions);
-		
+
 		return createGameBackend(board, positions);
 	}
 
 	private int[][] createGameBackend(int[][] board, List<Integer> positions) {
-		while(positions.size()>0) {
+		while (positions.size() > 0) {
 			int position = positions.remove(0);
 			int indexX = position % 9;
 			int indexY = position / 9;
-			
+
 			int savedValue = board[indexY][indexX];
 			board[indexY][indexX] = 0;
-			
-			if(!isValid(board)) {
+
+			if (!isValid(board)) {
 				board[indexY][indexX] = savedValue;
 			}
 		}
-		
+
 		return board;
+	}
+
+	private boolean isValid(int[][] board) {
+		return isValidBackend(board, 0, new int[] { 0 });
+	}
+
+	private boolean isValidBackend(int[][] board, int index, int[] numberOfSolutions) {
+		if (index > 80) {
+			return ++numberOfSolutions[0] == 1;
+		} else {
+			int indexX = index % 9;
+			int indexY = index / 9;
+
+			if (board[indexY][indexX] == 0) {
+				List<Integer> numbers = new ArrayList<Integer>();
+				for (int i = 1; i <= 9; i++) {
+					numbers.add(i);
+				}
+
+				while (numbers.size() > 0) {
+					int number = nextNumber(board, indexX, indexY, numbers);
+
+					if (number == -1) {
+						break;
+					} else {
+						board[indexY][indexX] = number;
+					}
+
+					if (!isValidBackend(board, index + 1, numberOfSolutions)) {
+						board[indexY][indexX] = 0;
+						return false;
+					} else {
+						board[indexY][indexX] = 0;
+					}
+
+				}
+			}else if(!isValidBackend(board, index + 1, numberOfSolutions)) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 
 }
