@@ -5,9 +5,17 @@ import java.util.Collections;
 import java.util.List;
 
 public class SudokuGame {
+	
+	private int[][] solutionBoard;
+	private int[][] gameBoard;
 
 	public SudokuGame() {
-
+		newGame();
+	}
+	
+	private void newGame() {
+		this.solutionBoard = createSolution(new int[9][9], 0);
+		this.gameBoard = createGame(deepCopy(this.solutionBoard));
 	}
 
 	private int[][] createSolution(int[][] board, int index) {
@@ -174,6 +182,18 @@ public class SudokuGame {
 		}
 		
 		return true;
+	}
+	
+	private int[][] deepCopy(int[][] array){
+		int[][] copy = new int[array.length][array[0].length];
+		
+		for(int y=0;y<9;y++) {
+			for(int x =0;x<9;x++) {
+				copy[y][x] = array[y][x];
+			}
+		}
+		
+		return copy;
 	}
 
 }
